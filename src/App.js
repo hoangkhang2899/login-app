@@ -1,12 +1,13 @@
 import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
+import axios from "axios";
+import Axios from "./Utils/Axios";
 
 import Header from "./Components/Layout/Header";
 import Home from "./Components/Body/Home";
 import Login from "./Components/Body/Login";
 import Logout from "./Components/Body/Logout";
 import Register from "./Components/Body/Register";
-import axios from "axios";
 
 class App extends React.Component {
   constructor(props) {
@@ -40,7 +41,7 @@ class App extends React.Component {
   componentDidMount() {
     const sessionID = sessionStorage.getItem("sessionID");
     if (sessionID !== null) {
-      axios.post("https://hoangkhang2899-api.herokuapp.com/loginSession", { sessionID: sessionID })
+      axios.post(Axios("loginSession"), { sessionID: sessionID })
         .then(res => {
           if (res.data.status) {
             this.onLogin(res.data)

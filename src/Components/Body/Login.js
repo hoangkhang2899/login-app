@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
+import Axios from "../../Utils/Axios";
 
 class Login extends React.Component {
     constructor(props) {
@@ -15,7 +16,7 @@ class Login extends React.Component {
         const password = e.target.password.value;
         e.preventDefault();
         this.setState({ noti: "Just a moment ..." })
-        axios.post("https://hoangkhang2899-api.herokuapp.com/login", { username: username, password: password })
+        axios.post(Axios("login"), { username: username, password: password })
             .then(res => {
                 if (res.data.status) {
                     this.props.onLogin(res.data);

@@ -1,8 +1,14 @@
+require('dotenv').config();
 var express = require('express');
-const cors = require("cors");
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+
+const cors = require('cors');
+var corsOptions = {
+    origin: process.env.CORS_URL,
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -12,7 +18,7 @@ var registerRouter = require('./routes/register');
 
 var app = express();
 
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

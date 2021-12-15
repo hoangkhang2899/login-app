@@ -1,6 +1,7 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
+import Axios from "../../Utils/Axios";
 
 class Register extends React.Component {
     constructor(props) {
@@ -21,7 +22,7 @@ class Register extends React.Component {
         }
         else {
             this.setState({ noti: "Just a moment ..." })
-            axios.post("https://hoangkhang2899-api.herokuapp.com/register", query)
+            axios.post(Axios("register"), query)
                 .then(res => {
                     if (res.data.status) {
                         query.status = true;
