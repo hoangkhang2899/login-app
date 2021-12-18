@@ -6,6 +6,7 @@ import Axios from "../../Utils/Axios";
 class Register extends React.Component {
     constructor(props) {
         super(props);
+        this.cancelRequest = React.createRef();
         this.state = {
             noti: ""
         }
@@ -22,7 +23,7 @@ class Register extends React.Component {
         }
         else {
             this.setState({ noti: "Just a moment ..." })
-            axios.post(Axios("register"), query)
+            axios.post(Axios("register"), query, {cancelToken: this.cancelRequest.token})
                 .then(res => {
                     if (res.data.status) {
                         query.status = true;
@@ -33,8 +34,19 @@ class Register extends React.Component {
                         this.setState({ noti: "Please try another username" })
                     }
                 })
-                .catch(() => this.setState({ noti: "Error connecting to server, please come back again" }))
+                .catch((err) => {
+                    if (err.message !== "canceled") {
+                        this.setState({ noti: "Error connecting to server, please come back again" });
+                    }
+                });
         }
+    }
+
+    componentDidMount() {
+        this.cancelRequest = axios.CancelToken.source();
+    }
+    componentWillUnmount() {
+        this.cancelRequest.cancel("canceled");
     }
 
     render() {
@@ -53,7 +65,7 @@ class Register extends React.Component {
                             className="form-control" name="username" placeholder="Username" />
                     </div>
                     <div className="form-group">
-                        <input type="text"
+                        <input type="password"
                             className="form-control" name="password" placeholder="Password" />
                     </div>
                     <div className="text-center">

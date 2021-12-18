@@ -2,12 +2,15 @@ import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import axios from "axios";
 import Axios from "./Utils/Axios";
+import { loadProgressBar } from 'axios-progress-bar'
 
 import Header from "./Components/Layout/Header";
 import Home from "./Components/Body/Home";
 import Login from "./Components/Body/Login";
 import Logout from "./Components/Body/Logout";
 import Register from "./Components/Body/Register";
+
+loadProgressBar();
 
 class App extends React.Component {
   constructor(props) {

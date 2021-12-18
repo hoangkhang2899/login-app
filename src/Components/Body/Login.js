@@ -6,6 +6,7 @@ import Axios from "../../Utils/Axios";
 class Login extends React.Component {
     constructor(props) {
         super(props);
+        this.cancelRequest = React.createRef();
         this.state = {
             noti: ""
         }
@@ -15,8 +16,8 @@ class Login extends React.Component {
         const username = e.target.username.value;
         const password = e.target.password.value;
         e.preventDefault();
-        this.setState({ noti: "Just a moment ..." })
-        axios.post(Axios("login"), { username: username, password: password })
+        // this.setState({ noti: "Just a moment ..." })
+        axios.post(Axios("login"), { username: username, password: password }, { cancelToken: this.cancelRequest.token })
             .then(res => {
                 if (res.data.status) {
                     this.props.onLogin(res.data);
@@ -25,7 +26,18 @@ class Login extends React.Component {
                     this.setState({ noti: "Wrong login information" })
                 }
             })
-            .catch(() => this.setState({ noti: "Error connecting to server, please come back again" }))
+            .catch((err) => {
+                if (err.message !== "canceled") {
+                    this.setState({ noti: "Error connecting to server, please come back again" });
+                }
+            });
+    }
+
+    componentDidMount() {
+        this.cancelRequest = axios.CancelToken.source();
+    }
+    componentWillUnmount() {
+        this.cancelRequest.cancel("canceled");
     }
 
     render() {
@@ -42,7 +54,7 @@ class Login extends React.Component {
                             className="form-control" name="username" placeholder="Username" />
                     </div>
                     <div className="form-group">
-                        <input type="text"
+                        <input type="password"
                             className="form-control" name="password" placeholder="Password" />
                     </div>
                     <div className="text-center">
