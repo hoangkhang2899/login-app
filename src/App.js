@@ -3,21 +3,25 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import axios from "axios";
 import Axios from "./Utils/Axios";
 import { loadProgressBar } from 'axios-progress-bar'
+import socketIOClient from "socket.io-client";
 
 import Header from "./Components/Layout/Header";
 import Home from "./Components/Body/Home";
 import Login from "./Components/Body/Login";
 import Logout from "./Components/Body/Logout";
-import Register from "./Components/Body/Register";
+import Display from "./Components/Body/Display";
+import Add from "./Components/Body/Add";
 
 loadProgressBar();
 
 class App extends React.Component {
   constructor(props) {
     super(props);
+    this.socketIo = React.createRef();
     this.state = {
       isLogin: false,
-      fullname: ""
+      fullname: "",
+      customerID: []
     }
   }
   onLogin(data) {
@@ -26,6 +30,13 @@ class App extends React.Component {
         isLogin: true,
         fullname: data.fullname
       });
+      axios.post(Axios("customer"))
+        .then(res => {
+          this.setState({ customerID: res.data });
+          this.socketIo.current = socketIOClient.connect(Axios(""));
+          this.socketIo.current.on("sendDataServer", () => console.log("Refesh page to view new update!"))
+        })
+        .catch(err => console.log(err));
       if (!sessionStorage.getItem("sessionID")) {
         sessionStorage.setItem("sessionID", data.id)
       }
@@ -35,10 +46,19 @@ class App extends React.Component {
     if (bool) {
       this.setState({
         isLogin: false,
-        fullname: ""
+        fullname: "",
+        customerID: []
       });
       sessionStorage.removeItem("sessionID");
+      this.socketIo.current.disconnect();
     }
+  }
+  deleteCustomer(obj) {
+    axios.post(Axios("deleteCustomer"), obj)
+      .then(res => {
+        this.socketIo.current.emit("sendDataClient", 1);
+      })
+      .catch(err => console.log(err));
   }
 
   componentDidMount() {
@@ -56,6 +76,9 @@ class App extends React.Component {
         .catch(() => console.log("Error"))
     }
   }
+  componentWillUnmount() {
+    this.socketIo.current.disconnect();
+  }
   render() {
     return (
       <BrowserRouter>
@@ -65,7 +88,13 @@ class App extends React.Component {
             <Route exact path="/"> <Home /></Route>
             <Route exact path="/login"> <Login onLogin={this.onLogin.bind(this)} isLogin={this.state.isLogin} /></Route>
             <Route exact path="/logout"> <Logout onLogout={this.onLogout.bind(this)} /></Route>
-            <Route exact path="/register"> <Register onRegister={this.onLogin.bind(this)} isLogin={this.state.isLogin} /></Route>
+            <Route exact path="/display">
+              <Display
+                isLogin={this.state.isLogin}
+                customerID={this.state.customerID}
+                deleteCustomer={this.deleteCustomer.bind(this)} />
+            </Route>
+            <Route exact path="/add"> <Add /></Route>
           </Switch>
         </div>
       </BrowserRouter>

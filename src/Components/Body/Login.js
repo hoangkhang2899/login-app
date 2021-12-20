@@ -48,7 +48,7 @@ class Login extends React.Component {
                 <p className="pl-3">Username: hoangkhang2899</p>
                 <p className="pl-3">Password: 123</p>
                 <form onSubmit={(e) => this.handleSubmit(e)}>
-                    {this.state.status || this.props.isLogin ? <Redirect to="/" /> : ""}
+                    {this.state.status || this.props.isLogin ? <Redirect to="/display" /> : ""}
                     <div className="form-group" >
                         <input type="text"
                             className="form-control" name="username" placeholder="Username" />

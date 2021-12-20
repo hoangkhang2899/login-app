@@ -22,15 +22,21 @@ class Header extends React.Component {
                             <NavLink className="nav-link" activeClassName="active" exact to="/">Home</NavLink>
                         </li>
                         {this.props.isLogin ?
+                            "" :
                             <li className="nav-item">
-                                <NavLink className="nav-link" activeClassName="active" exact to="/logout">Logout</NavLink>
-                            </li> :
-                            <li className="nav-item">
-                                <NavLink className="nav-link" activeClassName="active" exact to="/register">Register</NavLink>
+                                <NavLink className="nav-link" activeClassName="active" exact to="/add">Add</NavLink>
                             </li>
                         }
                         {this.props.isLogin ?
-                            "" :
+                            <li className="nav-item">
+                                <NavLink className="nav-link" activeClassName="active" exact to="/display">Customer</NavLink>
+                            </li> :
+                            ""
+                        }
+                        {this.props.isLogin ?
+                            <li className="nav-item">
+                                <NavLink className="nav-link" activeClassName="active" exact to="/logout" onClick={(e) => e.target.blur()}>Logout</NavLink>
+                            </li> :
                             <li className="nav-item">
                                 <NavLink className="nav-link" activeClassName="active" exact to="/login">Login</NavLink>
                             </li>

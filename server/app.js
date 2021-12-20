@@ -15,6 +15,9 @@ var usersRouter = require('./routes/users');
 var loginRouter = require('./routes/login');
 var sessionRouter = require('./routes/loginSession');
 var registerRouter = require('./routes/register');
+var customerRouter = require('./routes/customer');
+var addCustomerRouter = require('./routes/addCustomer');
+var deleteCustomerRouter = require('./routes/deleteCustomer');
 
 var app = express();
 
@@ -30,5 +33,8 @@ app.use('/login', loginRouter);
 app.use('/loginSession', sessionRouter);
 app.use('/users', usersRouter);
 app.use('/register', registerRouter);
+app.use('/customer', customerRouter);
+app.use('/addcustomer', addCustomerRouter);
+app.use('/deletecustomer', deleteCustomerRouter);
 
 module.exports = app;
