@@ -16,7 +16,6 @@ class Login extends React.Component {
         const username = e.target.username.value;
         const password = e.target.password.value;
         e.preventDefault();
-        // this.setState({ noti: "Just a moment ..." })
         axios.post(Axios("login"), { username: username, password: password }, { cancelToken: this.cancelRequest.token })
             .then(res => {
                 if (res.data.status) {

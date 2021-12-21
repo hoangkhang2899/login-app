@@ -29,8 +29,11 @@ const socketIo = require("socket.io")(server, {
 });
 socketIo.on("connection", (socket) => {
   console.log("New client connected " + socket.id)
-  socket.on("sendDataClient", (data) => {
+  socket.on("sendDataClient", (data, callback = 0) => {
     socketIo.emit("sendDataServer", data);
+    if(typeof(callback) === 'function') {
+      callback();
+    }
   })
   socket.on("disconnect", () => {
     console.log("Client disconnected")

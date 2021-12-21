@@ -54,11 +54,13 @@ class Add extends Component {
             else if (x.toString() === lastKey[lastKey.length - 1]) {
                 axios.post(Axios("addcustomer"), this.state)
                     .then(async res => {
-                        console.log(res);
+                        let data = this.state;
+                        data._id = res.data._id;
                         e.target.reset();
                         this.socketIo.current = await socketIOClient.connect(Axios(""));
-                        this.socketIo.current.emit("sendDataClient", 1);
-                        setTimeout(() => this.socketIo.current.disconnect(), 2000);
+                        this.socketIo.current.emit("sendDataClient", data, () => {
+                            this.socketIo.current.disconnect();
+                        });
                         this.firstInput.current.focus();
                     })
                     .catch(err => console.log(err));

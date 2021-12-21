@@ -10,16 +10,19 @@ class Display extends React.Component {
     onDeleteCustomer(e) {
         e.preventDefault();
         e.target.blur();
-
         let cell = e.target.parentElement.parentElement.cells;
-        this.props.deleteCustomer({ inputName: cell[1].textContent, inputID: cell[5].textContent });
+        this.props.deleteCustomer({ 
+            method: 'delete', 
+            inputName: cell[1].textContent, 
+            inputID: cell[5].textContent 
+        });
     }
 
     render() {
         let customerList =
             this.props.customerID.map((item, index) => (
                 <tr key={index}>
-                    <td>{index + 1}</td>
+                    <td>{item._id}</td>
                     <td>{item.inputName}</td>
                     <td className='text-center'>{item.inputDay}/{item.inputMonth}/{item.inputYear}</td>
                     <td className='text-center'>{item.inputGender === 1 ? "Nữ" : "Nam"}</td>
@@ -51,7 +54,7 @@ class Display extends React.Component {
                     <table className="table">
                         <thead>
                             <tr>
-                                <th className="text-center">STT</th>
+                                <th className="text-center">Input time</th>
                                 <th className="text-center">Họ và tên</th>
                                 <th className="text-center">Ngày sinh</th>
                                 <th className="text-center">Giới tính</th>

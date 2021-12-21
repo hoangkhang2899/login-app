@@ -18,6 +18,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.socketIo = React.createRef();
+    this.socketLogin = false;
     this.state = {
       isLogin: false,
       fullname: "",
@@ -30,11 +31,26 @@ class App extends React.Component {
         isLogin: true,
         fullname: data.fullname
       });
-      axios.post(Axios("customer"))
+      axios.post(Axios("customer"), { sessionID: data.id })
         .then(res => {
           this.setState({ customerID: res.data });
           this.socketIo.current = socketIOClient.connect(Axios(""));
-          this.socketIo.current.on("sendDataServer", () => console.log("Refesh page to view new update!"))
+          this.socketLogin = true;
+          this.socketIo.current.on("sendDataServer", data => {
+            if (data.method === 'register') {
+              delete data.errorValidate;
+              this.setState({ customerID: [...this.state.customerID, data] });
+            }
+            else {
+              let { customerID } = this.state;
+              customerID.forEach((item, index) => {
+                if (item.inputName === data.inputName && item.inputID === data.inputID) {
+                  customerID.splice(index, 1);
+                  this.setState({ customerID: customerID });
+                }
+              });
+            }
+          })
         })
         .catch(err => console.log(err));
       if (!sessionStorage.getItem("sessionID")) {
@@ -56,7 +72,7 @@ class App extends React.Component {
   deleteCustomer(obj) {
     axios.post(Axios("deleteCustomer"), obj)
       .then(res => {
-        this.socketIo.current.emit("sendDataClient", 1);
+        this.socketIo.current.emit("sendDataClient", obj);
       })
       .catch(err => console.log(err));
   }
@@ -77,7 +93,9 @@ class App extends React.Component {
     }
   }
   componentWillUnmount() {
-    this.socketIo.current.disconnect();
+    if (this.socketLogin) {
+      this.socketIo.current.disconnect();
+    }
   }
   render() {
     return (
