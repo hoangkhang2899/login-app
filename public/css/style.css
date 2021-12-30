@@ -6,7 +6,7 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
 
@@ -35,11 +35,11 @@ input[type=number] {
   width: 100px;
   height: 100%;
   box-shadow: 0 0 10px #29d, 0 0 5px #29d;
-  opacity: 1.0;
+  opacity: 1;
 
   -webkit-transform: rotate(3deg) translate(0px, -4px);
-      -ms-transform: rotate(3deg) translate(0px, -4px);
-          transform: rotate(3deg) translate(0px, -4px);
+  -ms-transform: rotate(3deg) translate(0px, -4px);
+  transform: rotate(3deg) translate(0px, -4px);
 }
 
 .nprogress-custom-parent {
@@ -52,3 +52,39 @@ input[type=number] {
   position: absolute;
 }
 
+/* Text color */
+.text-lightyellow {
+  color: rgb(248, 170, 0);
+}
+
+/* Background */
+.bg-violet {
+  background-color: rgb(64, 44, 105);
+}
+.bg-lightgrey {
+  background-color: rgb(216, 216, 216);
+}
+.bg-lightyellow {
+  background-color: rgb(248, 170, 0);
+}
+
+.header {
+  background-image: url("../image/background.jpg");
+  /* min-height: 520px; */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+footer {
+  color: rgb(206, 206, 206);
+  background-color: rgb(64, 44, 105);
+  border-top: 0.2rem solid rgb(248, 170, 0);
+}
+.navbar {
+  border-top: 0.1rem solid rgb(248, 170, 0);
+}
+
+.card-footer {
+  border: none;
+  background-color: transparent;
+}

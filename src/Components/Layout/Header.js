@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 class Header extends React.Component {
     render() {
         return (
-            <nav className="navbar navbar-expand-sm bg-dark navbar-dark sticky-top" style={{ opacity: 0.7 }}>
+            <nav className="navbar navbar-expand-sm bg-violet navbar-dark sticky-top">
                 {this.props.isLogin ?
                     <span className="navbar-brand d-block d-sm-none" style={{ fontSize: "0.8rem" }}>
                         Hi, {this.props.fullname}
@@ -17,7 +17,7 @@ class Header extends React.Component {
                     <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="collapsibleNavId">
-                    <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <ul className="navbar-nav">
                         <li className="nav-item">
                             <NavLink className="nav-link" activeClassName="active" exact to="/">Home</NavLink>
                         </li>

@@ -6,6 +6,7 @@ import { loadProgressBar } from 'axios-progress-bar'
 import socketIOClient from "socket.io-client";
 
 import Header from "./Components/Layout/Header";
+import Footer from "./Components/Layout/Footer";
 import Home from "./Components/Body/Home";
 import Login from "./Components/Body/Login";
 import Logout from "./Components/Body/Logout";
@@ -101,7 +102,6 @@ class App extends React.Component {
     return (
       <BrowserRouter>
         <Header isLogin={this.state.isLogin} fullname={this.state.fullname} />
-        <div className="container-fluid">
           <Switch>
             <Route exact path="/"> <Home /></Route>
             <Route exact path="/login"> <Login onLogin={this.onLogin.bind(this)} isLogin={this.state.isLogin} /></Route>
@@ -114,7 +114,7 @@ class App extends React.Component {
             </Route>
             <Route exact path="/add"> <Add /></Route>
           </Switch>
-        </div>
+          <Footer />
       </BrowserRouter>
     );
   }
